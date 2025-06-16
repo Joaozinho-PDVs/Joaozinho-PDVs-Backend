@@ -1,0 +1,59 @@
+# Ambientes virtuais
+backend/pdv_env/
+backend/venv/
+.env/
+*.env
+
+# Bytecode do Python
+backend/__pycache__/
+*.py[cod]
+*$py.class
+
+# Banco de dados SQLite (desenvolvimento)
+*.sqlite3
+
+# Arquivos de configuração de IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos temporários de sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de migração quebrados ou descartáveis
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Arquivos de coverage/testes
+htmlcov/
+coverage.xml
+*.cover
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+nosetests.xml
+test_db.sqlite3
+
+# Static/media gerados automaticamente (opcional)
+staticfiles/
+media/
+
+# Arquivos de build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Arquivos do VS Code CLI (se estiver usando no Termux ou Linux)
+.code-server/
+
+# Arquivos pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Arquivos de configuração do VS Code
