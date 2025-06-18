@@ -1,4 +1,4 @@
-#Detalhamento de Ações de Cada Estória de Usuário
+# Detalhamento de Ações de Cada Estória de Usuário
 1. Venda no Caixa
 
     Modelo: A estória de "Venda no Caixa" interage diretamente com os modelos Produto e Venda. Quando uma venda é realizada, uma nova entrada é criada no modelo Venda, associando um produto específico e a quantidade vendida.
