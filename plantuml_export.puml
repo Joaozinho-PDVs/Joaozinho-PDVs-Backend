@@ -1,0 +1,81 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+hide empty members
+
+package "Models" {
+  class Produto {
+    +id: int
+    +nome: str
+    +preco: decimal
+    +estoque: int
+    +data_cadastro: datetime
+    +codigo: str
+    +descricao: str
+  }
+
+  class Venda {
+    +id: int
+    +data: datetime
+    +valor_total: decimal
+  }
+
+  class ItemVenda {
+    +id: int
+    +quantidade: int
+    +valor_unitario: decimal
+    +subtotal(): decimal
+  }
+
+  Produto "1" -- "many" ItemVenda : produto
+  Venda "1" -- "many" ItemVenda : itens
+}
+
+package "Serializers" {
+  class ProdutoSerializer
+  class VendaSerializer
+  class ItemVendaSerializer
+
+  ProdutoSerializer --> Produto
+  VendaSerializer --> Venda
+  ItemVendaSerializer --> ItemVenda
+}
+
+package "ViewSets" {
+  class ProdutoViewSet {
+    +list()
+    +retrieve()
+    +create()
+    +update()
+    +destroy()
+    +produtos_sem_estoque()
+    +filter: nome__icontains, codigo__iexact
+  }
+
+  class VendaViewSet {
+    +list()
+    +retrieve()
+    +create()
+    +update()
+    +destroy()
+    +receita_total(inicio, fim)
+    +vendas_7_dias()
+    +total_vendas_7_dias()
+    +relatorio_semanal()
+  }
+
+  class ItemVendaViewSet {
+    +list()
+    +retrieve()
+    +create()
+    +update()
+    +destroy()
+    +por_venda(venda_id)
+  }
+
+  ProdutoViewSet --> ProdutoSerializer
+  VendaViewSet --> VendaSerializer
+  ItemVendaViewSet --> ItemVendaSerializer
+}
+
+@enduml
