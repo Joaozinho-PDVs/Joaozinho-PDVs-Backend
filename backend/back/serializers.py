@@ -5,16 +5,54 @@ class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Produto
         fields = '__all__'
+    
+    def validate_preco(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Preco negativo")
+        return value
+    
+    def validate_estoque(self, value):
+        if value < 0:
+            raise serializers.ValidationError("Estoque negativo")
+        return value
+    
+    def validate_codigo(self, value):
+        produto_id = self.instance.id if self.instance else None
+        if Produto.objects.filter(codigo__iexact=value).exclude(id=produto_id).exists():
+            raise serializers.ValidationError("Código já existe")
+        return value
 
 class ItemVendaSerializer(serializers.ModelSerializer):
     subtotal = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = ItemVenda
-        fields = ['produto', 'quantidade', 'valor_unitario', 'subtotal']
-
+        fields = ['id', 'produto', 'quantidade', 'valor_unitario', 'subtotal']
+        read_only_fields = ['subtotal', 'valor_unitario']
     def get_subtotal(self, obj):
-        return obj.subtotal()
+        return obj.quantidade * obj.valor_unitario
+
+    def update(self, instance, validated_data):
+        nova_quantidade = validated_data.get('quantidade', instance.quantidade)
+
+        if nova_quantidade < 0:
+            raise serializers.ValidationError("Quantidade negativa")
+
+        produto = validated_data.get('produto', instance.produto)
+        diferenca = nova_quantidade - instance.quantidade
+        estoque_disponivel = produto.estoque - diferenca
+
+        if diferenca > 0 and estoque_disponivel < diferenca:
+            raise serializers.ValidationError(f"Estoque insuficiente para o produto: {produto.nome}")
+        
+        produto.estoque -= diferenca
+        produto.save()
+
+        instance.quantidade = nova_quantidade
+        instance.produto = produto
+        instance.save()
+
+        return instance
 
 class VendaSerializer(serializers.ModelSerializer):
     itens = ItemVendaSerializer(many=True)
