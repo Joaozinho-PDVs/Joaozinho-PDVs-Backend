@@ -14,7 +14,7 @@ Para executar os testes, execute o comando `python manage.py test`.
 
 | Método | Endpoint                              | Query Params                                              | Descrição                                                                          |
 | ------ | ------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| GET    | `/api/produtos/`                      | `codigo=...`, `codigo__iexact=...`, `nome__icontains=...` | Lista todos os produtos com filtros. `codigo` é tratado de forma case-insensitive. |
+| GET    | `/api/produtos/`                      |  `codigo__iexact=...`, `nome__icontains=...` | Lista todos os produtos com filtros. `codigo` é tratado de forma case-insensitive. |
 | POST   | `/api/produtos/`                      | `{ nome, preco, estoque, codigo, descricao }`             | Cria um novo produto.                                                              |
 | GET    | `/api/produtos/{id}/`                 | —                                                         | Detalha um produto específico.                                                     |
 | PATCH  | `/api/produtos/{id}/`                 | `{ campo: valor }`                                        | Atualiza parcialmente um produto.                                                  |
